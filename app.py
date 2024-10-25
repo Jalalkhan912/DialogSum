@@ -101,20 +101,22 @@ def few_shot(example_index_to_summarize):
   return output
 
 st.title("FLAN-T5(Base) Prompt Engineered: Zero-shot, Single-shot, and Few-shot")
+
 example_index_to_summarize = st.number_input(
     label="Enter Index to Summarize",
     min_value=0,
     max_value=100,
     value=0
-)
-summary, zero_shot_output = zero_shot(example_index_to_summarize)
-one_shot_prompt = make_prompt(example_indices_full, example_index_to_summarize)
-one_shot_output = one_shot(example_index_to_summarize)
-few_shot_prompt = make_prompt(example_indices_full_few_shot, example_index_to_summarize)
-few_shot_output = few_shot(example_index_to_summarize)
-
-st.header("Comparizion of Outputs")
-st.write(f"**BASELINE HUMAN SUMMARY:**\n{summary}\n")
-st.write(f"**Zero-shot Output:**\n{zero_shot_output}\n")
-st.write(f"**Single-shot Output:**\n{one_shot_output}\n")
-st.write(f"**Few-shot Output:**\n{few_shot_output}\n")
+)  
+if st.button("Run"):  
+    summary, zero_shot_output = zero_shot(example_index_to_summarize)
+    one_shot_prompt = make_prompt(example_indices_full, example_index_to_summarize)
+    one_shot_output = one_shot(example_index_to_summarize)
+    few_shot_prompt = make_prompt(example_indices_full_few_shot, example_index_to_summarize)
+    few_shot_output = few_shot(example_index_to_summarize)
+if st.button("Results"):
+    st.header("Comparizion of Outputs")
+    st.write(f"**BASELINE HUMAN SUMMARY:**\n{summary}\n")
+    st.write(f"**Zero-shot Output:**\n{zero_shot_output}\n")
+    st.write(f"**Single-shot Output:**\n{one_shot_output}\n")
+    st.write(f"**Few-shot Output:**\n{few_shot_output}\n")
