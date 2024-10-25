@@ -96,7 +96,7 @@ def few_shot(example_indices_full_few_shot,my_example):
 
 st.title("Google FLAN-T5(Base) Prompt Engineered Model: Zero-shot, Single-shot, and Few-shot")
 
-my_example = st.text_area("Enter dialogues to summarize")
+my_example = st.text_area("Enter dialogues to summarize", value="#Maaz#: Jalal how are you?#Jalal#: I am good thank you.#Maaz#: Are you going to school tomorrow.#Jalal#: No bro i am not going to school tomorrow.#Maaz#: why? #Jalal#: I am working on a project, are you want to work with me on my project?#Maaz#: sorry, i have to go to school.")
 
 if st.button("Run"):  
     zero_shot_output = zero_shot(my_example)
