@@ -100,9 +100,23 @@ my_example = st.text_area("Enter dialogues to summarize")
 
 if st.button("Run"):  
     zero_shot_output = zero_shot(my_example)
-    one_shot_output = one_shot(example_indices_full,my_example)
-    few_shot_output = few_shot(example_indices_full_few_shot,my_example)
-    st.header("\n\n*Comparizion of Outputs*\n\n")
-    st.write(f"*Zero-shot Output:*{zero_shot_output}\n\n")
-    st.write(f"*Single-shot Output:*{one_shot_output}\n\n")
-    st.write(f"*Few-shot Output:*{few_shot_output}\n")
+    one_shot_output = one_shot(example_indices_full, my_example)
+    few_shot_output = few_shot(example_indices_full_few_shot, my_example)
+
+    st.header("**Comparison of Outputs**")
+
+    # Create three columns
+    col1, col2, col3 = st.columns(3)
+
+    # Display outputs in respective columns
+    with col1:
+        st.subheader("Zero-shot Output")
+        st.write(zero_shot_output)
+
+    with col2:
+        st.subheader("One-shot Output")
+        st.write(one_shot_output)
+
+    with col3:
+        st.subheader("Few-shot Output")
+        st.write(few_shot_output)
