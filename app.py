@@ -94,7 +94,7 @@ def few_shot(example_indices_full_few_shot,my_example):
   )
   return output
 
-st.title("FLAN-T5(Base) Prompt Engineered: Zero-shot, Single-shot, and Few-shot")
+st.title("Google FLAN-T5(Base) Prompt Engineered Model: Zero-shot, Single-shot, and Few-shot")
 
 my_example = st.text_area("Enter dialogues to summarize")
 
