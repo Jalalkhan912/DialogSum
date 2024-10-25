@@ -101,7 +101,11 @@ def few_shot(example_index_to_summarize):
   return output
 
 st.title("FLAN-T5(Base) Prompt Engineered: Zero-shot, Single-shot, and Few-shot")
+import pandas as pd
 
+data = pd.read_csv('test_data_sample.csv')
+
+st.write(data)
 example_index_to_summarize = st.number_input(
     label="Enter Index to Summarize",
     min_value=0,
