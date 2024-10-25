@@ -16,19 +16,17 @@ model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 # load the specific tokenizer for above model
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
+# initialize variables
 example_indices_full = [40]
-example_indices_full_few_shot = [40, 80, 120]
-example_index_to_summarize = 0
+example_indices_full_few_shot = [40, 80, 120, 200, 220]
 dash_line = '-'.join('' for x in range(100))
 
-def zero_shot(example_index_to_summarize):
-    dialogue = dataset['test'][example_index_to_summarize]['dialogue']
-    summary = dataset['test'][example_index_to_summarize]['summary']
-
+# zero_shot inference
+def zero_shot(my_example):
     prompt = f"""
 Dialogue:
 
-{dialogue}
+{my_example}
 
 What was going on?
 """
@@ -42,15 +40,14 @@ What was going on?
         skip_special_tokens=True
     )
 
-    return summary, output
+    return output
 
-def make_prompt(example_indices_full, example_index_to_summarize):
+# this prompt template will be used
+def my_prompt(example_indices, my_example):
     prompt = ''
-    for index in example_indices_full:
+    for index in example_indices:
         dialogue = dataset['test'][index]['dialogue']
         summary = dataset['test'][index]['summary']
-
-        # The stop sequence '{summary}\n\n\n' is important for FLAN-T5. Other models may have their own preferred stop sequence.
         prompt += f"""
 Dialogue:
 
@@ -62,22 +59,20 @@ What was going on?
 
 """
 
-    dialogue = dataset['test'][example_index_to_summarize]['dialogue']
-
     prompt += f"""
 Dialogue:
 
-{dialogue}
+{my_example}
 
 What was going on?
 """
 
     return prompt
 
-def one_shot(example_index_to_summarize):
-  summary = dataset['test'][example_index_to_summarize]['summary']
 
-  inputs = tokenizer(one_shot_prompt, return_tensors='pt')
+# this is for one_shot
+def one_shot(example_indices_full,my_example):
+  inputs = tokenizer(my_prompt(example_indices_full,my_example), return_tensors='pt')
   output = tokenizer.decode(
       model.generate(
           inputs["input_ids"],
@@ -87,10 +82,9 @@ def one_shot(example_index_to_summarize):
   )
   return output
 
-def few_shot(example_index_to_summarize):
-  summary = dataset['test'][example_index_to_summarize]['summary']
-
-  inputs = tokenizer(few_shot_prompt, return_tensors='pt')
+# few_shot
+def few_shot(example_indices_full_few_shot,my_example):
+  inputs = tokenizer(my_prompt(example_indices_full_few_shot,my_example), return_tensors='pt')
   output = tokenizer.decode(
       model.generate(
           inputs["input_ids"],
@@ -101,26 +95,14 @@ def few_shot(example_index_to_summarize):
   return output
 
 st.title("FLAN-T5(Base) Prompt Engineered: Zero-shot, Single-shot, and Few-shot")
-import pandas as pd
 
-data = pd.read_csv('test_data_sample.csv')
-
-st.write(data)
-example_index_to_summarize = st.number_input(
-    label="Enter Index to Summarize",
-    min_value=0,
-    max_value=100,
-    value=0
-)  
+my_example = st.text_area("Enter dialogues to summarize", value="#Maaz#: Jalal how are you?#Jalal#:  I am good thank you.#Maaz#: Are you going to school tomorrow.#Jalal#: No bro i am not going to school tomorrow.#Maaz#: why? #Jalal#: I am working on a project, are you want to work with me on my project?#Maaz#: sorry, i have to go to school.")
 
 if st.button("Run"):  
-    summary, zero_shot_output = zero_shot(example_index_to_summarize)
-    one_shot_prompt = make_prompt(example_indices_full, example_index_to_summarize)
-    one_shot_output = one_shot(example_index_to_summarize)
-    few_shot_prompt = make_prompt(example_indices_full_few_shot, example_index_to_summarize)
-    few_shot_output = few_shot(example_index_to_summarize)
+    summary, zero_shot_output = zero_shot(my_example)
+    one_shot_output = one_shot(example_indices_full,my_example)
+    few_shot_output = few_shot(example_indices_full_few_shot,my_example)
     st.header("Comparizion of Outputs")
-    st.write(f"**BASELINE HUMAN SUMMARY:**\n{summary}\n")
     st.write(f"**Zero-shot Output:**\n{zero_shot_output}\n")
     st.write(f"**Single-shot Output:**\n{one_shot_output}\n")
     st.write(f"**Few-shot Output:**\n{few_shot_output}\n")
