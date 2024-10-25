@@ -35,7 +35,7 @@ What was going on?
     output = tokenizer.decode(
         model.generate(
             inputs["input_ids"],
-            max_new_tokens=50,
+            max_new_tokens=80,
         )[0],
         skip_special_tokens=True
     )
@@ -76,7 +76,7 @@ def one_shot(example_indices_full,my_example):
   output = tokenizer.decode(
       model.generate(
           inputs["input_ids"],
-          max_new_tokens=50,
+          max_new_tokens=80,
       )[0],
       skip_special_tokens=True
   )
@@ -88,7 +88,7 @@ def few_shot(example_indices_full_few_shot,my_example):
   output = tokenizer.decode(
       model.generate(
           inputs["input_ids"],
-          max_new_tokens=50,
+          max_new_tokens=80,
       )[0],
       skip_special_tokens=True
   )
