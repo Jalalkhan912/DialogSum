@@ -30,7 +30,7 @@ Dialogue:
 
 What was going on?
 """
-    generation_config = GenerationConfig(max_new_tokens=80, do_sample=True, temperature=1.0)
+    generation_config = GenerationConfig(max_new_tokens=80, do_sample=True, temperature=0.2)
 
     inputs = tokenizer(prompt, return_tensors='pt')
     output = tokenizer.decode(
@@ -73,7 +73,7 @@ What was going on?
 
 # this is for one_shot
 def one_shot(example_indices_full,my_example):
-  generation_config = GenerationConfig(max_new_tokens=80, do_sample=True, temperature=1.0)
+  generation_config = GenerationConfig(max_new_tokens=80, do_sample=True, temperature=0.2)
 
   inputs = tokenizer(my_prompt(example_indices_full,my_example), return_tensors='pt')
   output = tokenizer.decode(
@@ -87,7 +87,7 @@ def one_shot(example_indices_full,my_example):
 
 # few_shot
 def few_shot(example_indices_full_few_shot,my_example):
-  generation_config = GenerationConfig(max_new_tokens=80, do_sample=True, temperature=1.0)
+  generation_config = GenerationConfig(max_new_tokens=80, do_sample=True, temperature=0.2)
   inputs = tokenizer(my_prompt(example_indices_full_few_shot,my_example), return_tensors='pt')
   output = tokenizer.decode(
       model.generate(
