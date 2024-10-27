@@ -18,7 +18,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
 
 # initialize variables
 example_indices_full = [40]
-example_indices_full_few_shot = [40, 80, 120, 200, 220]
+example_indices_full_few_shot = [40, 80, 220]
 dash_line = '-'.join('' for x in range(100))
 
 # zero_shot inference
